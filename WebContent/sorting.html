@@ -16,11 +16,15 @@
 <div class="jumbotron">
 <h2 class="well well-lg text-center">Random Sorting System</h2>
         <div ng-controller="myCtrl" class="form-group">
+        <form name="myForm">
       <label for="sorting_values">Enter The Numbers:</label>
-      <input type="text" name="sorting_values" class="form-control" ng-model="sorting_values"><br/>
+      <input type="text" name="sorting_values" class="form-control" ng-model="sorting_values" required placeholder="Please enter the data using comma seperator" ng-pattern="numOnlyRegex">
+      <span style="color:red" ng-show="myForm.sorting_values.$error.pattern">Only number are allowed</span>
+      <span style="color:red" ng-show="myForm.sorting_values.$touched && myForm.sorting_values.$error.required">Please Enter the input values</span>
+      <br/>
       <Button type="button" class="btn btn-primary btn-block" ng-click="sorting()">Sorting</Button>
        <Button type="button" class="btn btn-success btn-block" ng-click="getHistory()">History</Button>
-   
+   </form>
     
 <div ng-show="success">
 <div class="alert alert-success" >
@@ -29,9 +33,26 @@
      <p class="bg-success">Sorting Order : {{sortingObj.sortingList}}</p>
      <p class="bg-success">Position Changes Count : {{sortingObj.positionChangeCount}}</p>
       <p class="bg-success">Sorting Timing : {{sortingObj.timing}} m/s</p>
-      </div>
-    <!-- <ul><li ng-repeat="x in [4, 4] track by History">{{x}}</li></ul> -->
-    <p ng-repeat="x in History" ng-show="displayHistroy">{{x}}</p>
+      </div><br/><br/>
+      <table class="table table-hover" ng-show="displayHistroy">
+    <thead>
+      <tr>
+        <th>Given Data</th>
+        <th>Sorting Data</th>
+        <th>Sorting Timing</th>
+        <th>No of Position Changes</th>
+      </tr>
+    </thead>
+    <tbody>
+  <tr ng-repeat="x in History">
+    <td>{{ x.originalList }}</td>
+    <td>{{ x.sortingList }}</td>
+    <td>{{ x.timing }} n/s</td>
+     <td>{{ x.positionChangeCount }}</td>
+  </tr>
+  </tbody>
+</table>
+   
     </div>
 </div>
 </div>
@@ -42,7 +63,9 @@
             var myApp = angular.module("myApp", []);
             
             myApp.controller("myCtrl", [ '$scope', '$http', function($scope, $http) {
-             
+            	
+            	    $scope.numOnlyRegex = /^[0-9,]*$/;
+            	
                  $scope.success = false;
                  $scope.displayHistroy = false;
                 $scope.sorting = function() {
@@ -73,7 +96,7 @@
                 	$scope.success = false;
                 	$scope.displayHistroy = true;
                     $http({
-                        url : 'Servlet/SortingHistroy',
+                        url : 'Servlet/SortingHistory',
                         method : "POST",
                         headers: {
                             'Content-Type': 'application/json', /*or whatever type is relevant */
