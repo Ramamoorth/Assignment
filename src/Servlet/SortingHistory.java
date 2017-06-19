@@ -11,9 +11,14 @@ import com.google.gson.Gson;
 
 import Utill.RandomSortingMethods;
 
-
-public class SortingHistroy extends HttpServlet{
+/**
+ * 
+ * @author 582571
+ *Create the SortingHistroy used to get the list of sorting in the history.
+ */
+public class SortingHistory extends HttpServlet{
 	
+	// Method to handle GET method request.
 	 public void doGet(HttpServletRequest request, HttpServletResponse response)
 		      throws ServletException, IOException {
 		 ArrayList historyList = new ArrayList();
@@ -28,7 +33,7 @@ public class SortingHistroy extends HttpServlet{
 		 String json = new Gson().toJson(historyList);
          response.setContentType("application/json");
          response.getWriter().write(json);
-         System.out.println("json List :"+json);
+         
 
 }
 
