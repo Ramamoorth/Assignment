@@ -14,6 +14,12 @@ import com.model.SortingModel;
 import Utill.RandomSortingMethods;
 import com.google.*;
 import com.google.gson.Gson;
+
+/**
+ * 
+ * @author 582571
+ *Create SortingServlet for get the request data and save it to the particular file
+ */
 public class SortingServlet extends HttpServlet {
 
 		
@@ -26,29 +32,30 @@ public class SortingServlet extends HttpServlet {
 	        BufferedReader br = request.getReader();
 	        String str = null;
 	        String sortingValues = null;
+	        int[] results = null;
+	        String[] sortingValuesArray = null;
 	        while ((str = br.readLine()) != null) {
 	            sb.append(str);
 	        }
-	       // String json = new Gson().toJson(sb);
-	       // System.out.println(json);
+	       
 	        JSONObject jObj;
 			try {
 				jObj = new JSONObject(sb.toString());
 				 sortingValues = jObj.getString("sorting_values");
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
-			String[] sortingValuesArray = sortingValues.split(",");
-			   int[] results = new int[sortingValuesArray.length];
+			 sortingValuesArray = sortingValues.split(",");
+			   results = new int[sortingValuesArray.length];
 			   for (int i = 0; i < sortingValuesArray.length; i++) {
 				    try {
 				        results[i] = Integer.parseInt(sortingValuesArray[i]);
 				    } catch (NumberFormatException nfe) {
-				        //NOTE: write something here if you need to recover from formatting errors
+				        
 				    };
 				}
-			   int positionChangeCount = randomSortingMethods.getPositionChanges(results);
+			   int positionChangeCount = randomSortingMethods.getNoOfPositionChanges(results,results.length);
 			   long start = System.nanoTime();
 			      Arrays.sort(results);
 			      long end = System.nanoTime();
@@ -60,16 +67,12 @@ public class SortingServlet extends HttpServlet {
 			          }
 			          sortedValues.append(results[i]);                     
 			       }
-			      
-			     
-					//displaySortingData();
-				
-			      randomSortingMethods.setSortingProp(sortedValues,timeInMillis,positionChangeCount);
-			     
+
 			      SortingModel sortingModel = new SortingModel();
+			      sortingModel.setOriginalList(sortingValues);
 			      sortingModel.setTiming(timeInMillis);
 			      sortingModel.setSortingList(Arrays.toString(results));
-			      sortingModel.setPositionChangeCount(2);
+			      sortingModel.setPositionChangeCount(positionChangeCount);
 			     
 			        String json = new Gson().toJson(sortingModel);
 			        randomSortingMethods.savesortingData(json);
