@@ -68,7 +68,7 @@ public class RandomSortingMethods {
 	 //This method is used to save the sortingdata to json file	 
 	public static String savesortingData(String sortingModel){   
 		Writer output;
-        try(PrintWriter output1 = new PrintWriter(new FileWriter("C:\\ec\\testout.json",true))) 
+        try(PrintWriter output1 = new PrintWriter(new FileWriter("C:\\RandomSorting\\testout.json",true))) 
         {
             output1.printf("%s\r\n", sortingModel);
         } 
@@ -78,7 +78,7 @@ public class RandomSortingMethods {
 	
 	 // This method is used to display the history of sorted values
 	public ArrayList displaySortingData() throws Exception{    
-        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("C:\\ec\\testout.json"), "Cp1252")); 	      
+        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("C:\\RandomSorting\\testout.json"), "Cp1252")); 	      
 	      ArrayList historyArray = new ArrayList();
 	      Gson gson = new Gson();
         String line;    
