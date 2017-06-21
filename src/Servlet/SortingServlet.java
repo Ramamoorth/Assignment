@@ -33,6 +33,7 @@ public class SortingServlet extends HttpServlet {
 	        String str = null;
 	        String sortingValues = null;
 	        int[] results = null;
+	        int[] positionArray =null;
 	        String[] sortingValuesArray = null;
 	        while ((str = br.readLine()) != null) {
 	            sb.append(str);
@@ -55,7 +56,8 @@ public class SortingServlet extends HttpServlet {
 				        
 				    };
 				}
-			   int positionChangeCount = randomSortingMethods.getNoOfPositionChanges(results,results.length);
+			   positionArray = results.clone();
+			   int positionChangeCount = randomSortingMethods.getNoOfPositionChanges(positionArray);
 			   long start = System.nanoTime();
 			      Arrays.sort(results);
 			      long end = System.nanoTime();
